@@ -10,6 +10,22 @@
         - htop
         - tmux
         - vim-nox
+        - colordiff
+        - curl
+        - at
+        - htop
+        - iotop
+        - lsof
+        - mc
+        - neofetch
+        - net-tools
+        - nmap
+        - rsync
+        - screen
+        - wget
+        - whois
+        - zsh
+
 
   - name: add ansible user
     user:
