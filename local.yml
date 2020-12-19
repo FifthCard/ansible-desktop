@@ -10,24 +10,26 @@
         - htop
         - tmux
         - vim-nox
-  - name: copy wallpaper file
+
+  - name: add ansible user
+    user:
+      name: velociraptor
+      system: yes
+
+  - name: set up sudo for ansible user
     copy:
-      src: files/wallpaper.png
-      dest: /usr/share/backgrounds/ansible-wallpaper.png
+      src: files/sudoer_velociraptor
+      dest: /etc/sudoers.d/velociraptor
       owner: root
       group: root
+      mode: 0440
 
-  - name: set wallpaper
-    become_user: fifthcard
-    dconf:
-      key: "/org/gnome/desktop/background/picture-uri"
-      value: "'file://usr/share/backgrounds/ansible-wallpaper.png'"
-
-  - name:  set wallpaper position
-    become_user: fifthcard
-    dconf:
-      key: "/org/gnome/desktop/background/picture-options"
-      value: "'zoom'"
+  - name: add ansible cron job
+    cron:
+      name: ansible auto-provision
+      user: velociraptor
+      minute: "*/10"
+      job: ansible-pull -o -U https://github.com/FifthCard/ansible-desktop.git
 
   - name: copy .bashrc file
     copy:
