@@ -1,4 +1,4 @@
----
+:---
 - hosts: localhost
   connection: local
   become: true
@@ -6,4 +6,7 @@
   tasks:
   - name: install htop
     package:
-      name: htop
+      name: 
+        - htop
+        - tmux
+        - vim-nox
