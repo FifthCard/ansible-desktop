@@ -76,10 +76,10 @@
       - { src: 'bash/bash_functions', dest: '.bash/bash_functions' }
       - { src: 'bash/bashrc', dest: '.bashrc' }
       - { src: 'bash/profile', dest: '.profile' }
-      - { src: 'git/gitconfig', dest: '.gitconfig' }
+#      - { src: 'git/gitconfig', dest: '.gitconfig' }
       - { src: 'htop/htoprc', dest: '.config/htop/htoprc' }
-      - { src: 'inputrc', dest: '.inputrc' }
-      - { src: 'mc/mc.ini', dest: '.config/mc/ini' }
+#      - { src: 'inputrc', dest: '.inputrc' }
+#      - { src: 'mc/mc.ini', dest: '.config/mc/ini' }
       - { src: 'vim/vimrc', dest: '.vimrc' }
       - { src: 'zsh/zshrc', dest: '.zshrc' }
 
