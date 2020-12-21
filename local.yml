@@ -68,8 +68,8 @@
       - { dir: '.config' }
       - { dir: '.config/htop' }
       - { dir: '.config/mc' }
-#      - { dir: '.tmux' }
-#      - { dir: '.tmux/config' }
+      - { dir: '.tmux' }
+      - { dir: '.tmux/config' }
       - { dir: '.vim' }
       - { dir: '.vim/autoload' }
       - { dir: '.vim/bundle' }

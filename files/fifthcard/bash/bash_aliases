@@ -7,7 +7,6 @@ alias c='clear'
 alias cd..='cd ..'
 alias cp='cp -iv'
 alias chmod="chmod -c"
-alias chmod="chmod -c"
 alias df='df -h -x squashfs -x tmpfs -x devtmpfs'
 alias diff='colordiff'
 alias egrep='egrep --colour=auto'
@@ -16,8 +15,8 @@ alias E="vim -o "
 alias extip='curl icanhazip.com'
 alias grep='grep --color=auto'
 alias l.=' ls -lhFa --time-style=long-iso --color=auto'
-alias ll=' ls'
-alias la=' ls -a'
+alias ll=' ls -cf --time-sytle=long-iso --color=auto'
+alias la=' ls -a --color=auto'
 #alias ls=' ls -lhF --time-style=long-iso --color=auto'
 alias lsmount='mount |column -t'
 alias mkdir='mkdir -pv'
