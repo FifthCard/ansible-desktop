@@ -6,10 +6,10 @@
   tasks:
   - name: install packages
     package:
-      name: 
+      name:
         - htop
         - tmux
-        - vim-nox
+        - neovim
         - colordiff
         - curl
         - at
@@ -69,6 +69,12 @@
       - { dir: '.config/htop' }
       - { dir: '.config/mc' }
       - { dir: '.tmux' }
+      - { dir: '.config/nvim' }
+      - { dir: '.local' }
+      - { dir: '.local/share' }
+      - { dir: '.local/share/nvim' }
+      - { dir: '.local/share/nvim/site' }
+      - { dir: '.local/share/nvim/site/autoload' }
       - { dir: '.tmux/config' }
       - { dir: '.vim' }
       - { dir: '.vim/autoload' }
@@ -76,7 +82,7 @@
       - { dir: '.vim/colors' }
       - { dir: '.vim/ftplugin' }
       - { dir: '.zsh' }
-    
+
   - name: users | fifthcard | copy dotfiles
     tags: dotfiles,users,fifthcard,tmux,users,vim,zsh
     copy:
@@ -98,6 +104,8 @@
 #      - { src: 'mc/mc.ini', dest: '.config/mc/ini' }
       - { src: 'vim/vimrc', dest: '.vimrc' }
       - { src: 'zsh/zshrc', dest: '.zshrc' }
+      - { src: 'nvim/init.vim', dest: '.config/nvim/init.vim' }
+      - { src: 'nvim/plug.vim', dest: '.local/share/nvim/site/autoload/plug.vim' }
 
 
   - name: users | fifthcard | copy individual zsh config files
