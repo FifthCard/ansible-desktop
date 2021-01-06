@@ -26,7 +26,6 @@
         - whois
         - zsh
 
-
   - name: add ansible user
     user:
       name: velociraptor
@@ -47,13 +46,12 @@
       minute: "*/10"
       job: ansible-pull -o -U https://github.com/FifthCard/ansible-desktop.git
 
-#  - name: copy .bashrc file
-#    copy:
-#      src: files/bashrc
-#      dest: /home/fifthcard/.bashrc
-#      owner: fifthcard
-#      group: fifthcard
-
+  - name: copy .bashrc file
+    copy:
+      src: files/bashrc
+      dest: /home/fifthcard/.bashrc
+      owner: fifthcard
+      group: fifthcard
 
   - name: create config dir user fifthcard
     tags: dotfiles, fifthcard,tmux,users,vim,zsh
@@ -78,9 +76,7 @@
       - { dir: '.tmux/config' }
       - { dir: '.vim' }
       - { dir: '.vim/autoload' }
-      - { dir: '.vim/bundle' }
-      - { dir: '.vim/colors' }
-      - { dir: '.vim/ftplugin' }
+      - { dir: '.vim/undodir' }
       - { dir: '.zsh' }
 
   - name: users | fifthcard | copy dotfiles
@@ -100,8 +96,6 @@
       - { src: 'bash/profile', dest: '.profile' }
 #      - { src: 'git/gitconfig', dest: '.gitconfig' }
       - { src: 'htop/htoprc', dest: '.config/htop/htoprc' }
-#      - { src: 'inputrc', dest: '.inputrc' }
-#      - { src: 'mc/mc.ini', dest: '.config/mc/ini' }
       - { src: 'vim/vimrc', dest: '.vimrc' }
       - { src: 'zsh/zshrc', dest: '.zshrc' }
       - { src: 'nvim/init.vim', dest: '.config/nvim/init.vim' }
@@ -129,66 +123,6 @@
       - { src: 'setopt.zsh' }
       - { src: 'theming.zsh' }
 
-  - name: users | fifthcard | copy vim ftype files
-    tags: dotfiles,fifthcard,users,vim
-    copy:
-      src: files/fifthcard/vim/{{ item.src }}
-      dest: /home/fifthcard/.vim/ftplugin/{{ item.src }}
-      owner: fifthcard
-      group: fifthcard
-      mode: 0600
-    with_items:
-      - { src: 'cmake.vim' }
-      - { src: 'cpp.vim' }
-      - { src: 'html.vim' }
-      - { src: 'perl.vim' }
-      - { src: 'python.vim' }
-      - { src: 'ruby.vim' }
-      - { src: 'sql.vim' }
-      - { src: 'xml.vim' }
-
-  - name: users | fifthcard | copy vim color files
-    tags: dotfiles,fifthcard,users,vim
-    copy:
-      src: files/fifthcard/vim/{{ item.src }}
-      dest: /home/fifthcard/.vim/colors/{{ item.src }}
-      owner: fifthcard
-      group: fifthcard
-      mode: 0600
-    with_items:
-      - { src: 'bubblegum-256-dark.vim' }
-      - { src: 'darktango.vim' }
-      - { src: 'jellybeans.vim' }
-      - { src: 'xoria256.vim' }
-      - { src: 'zenburn.vim' }
-
-  - name: users | fifthcard | install pathogen
-    tags: dotfiles,fifthcard,users,vim
-    copy:
-      src: files/fifthcard/vim/{{ item.src }}
-      dest: "{{ item.dest }}"
-      owner: fifthcard
-      group: fifthcard
-      mode: 0700
-    with_items:
-      - { src: 'pathogen.vim', dest: '/home/fifthcard/.vim/autoload/pathogen.vim' }
-
-  - name: users | fifthcard | checkout git repositories
-    tags: git,users,fifthcard
-    become: yes
-    git:
-      repo: "{{ item.repo }}"
-      dest: "{{ item.dest }}"
-      force: yes
-    with_items:
-      - { repo: 'https://github.com/ctrlpvim/ctrlp.vim.git', dest: '/home/fifthcard/.vim/bundle/ctrlp.vim' }
-      - { repo: 'https://github.com/davidhalter/jedi-vim.git', dest: '/home/fifthcard/.vim/bundle/jedi-vim' }
-      - { repo: 'https://github.com/pearofducks/ansible-vim', dest: '/home/fifthcard/.vim/bundle/ansible-vim' }
-      - { repo: 'https://github.com/rhysd/vim-grammarous.git', dest: '/home/fifthcard/.vim/bundle/vim-grammarous' }
-      - { repo: 'https://github.com/ron89/thesaurus_query.vim', dest: '/home/fifthcard/.vim/bundle/thesaurus_query' }
-      - { repo: 'https://github.com/scrooloose/nerdtree.git', dest: '/home/fifthcard/.vim/bundle/nerdtree' }
-      - { repo: 'https://github.com/tpope/vim-obsession.git', dest: '/home/fifthcard/.vim/bundle/vim-obsession' }
-      - { repo: 'https://github.com/vim-syntastic/syntastic.git', dest: '/home/fifthcard/.vim/bundle/syntastic' }
 #    notify: update_vim_bundle_perms
 
 
