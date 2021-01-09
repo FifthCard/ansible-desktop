@@ -64,20 +64,19 @@
     with_items:
       - { dir: '.bash' }
       - { dir: '.config' }
-      - { dir: '.config/htop' }
-      - { dir: '.config/mc' }
-      - { dir: '.tmux' }
       - { dir: '.config/nvim' }
       - { dir: '.local' }
       - { dir: '.local/share' }
       - { dir: '.local/share/nvim' }
       - { dir: '.local/share/nvim/site' }
       - { dir: '.local/share/nvim/site/autoload' }
-      - { dir: '.tmux/config' }
-      - { dir: '.vim' }
-      - { dir: '.vim/autoload' }
-      - { dir: '.vim/undodir' }
       - { dir: '.zsh' }
+      - { dir: '.oh-my-zsh' }
+      - { dir: '.oh-my-zsh/custom/' }
+      - { dir: '.oh-my-zsh/custom/themes/' }
+      - { dir: '.oh-my-zsh/custom/themes/powerlevel10k/' }
+        
+
 
   - name: users | fifthcard | copy dotfiles
     tags: dotfiles,users,fifthcard,tmux,users,vim,zsh
@@ -90,38 +89,16 @@
     with_items:
       - { src: 'bash/bash_aliases', dest: '.bash/bash_aliases' }
       - { src: 'bash/bash_profile', dest: '.bash_profile' }
-      - { src: 'bash/bash_prompt', dest: '.bash/bash_prompt' }
-      - { src: 'bash/bash_functions', dest: '.bash/bash_functions' }
       - { src: 'bash/bashrc', dest: '.bashrc' }
       - { src: 'bash/profile', dest: '.profile' }
-#      - { src: 'git/gitconfig', dest: '.gitconfig' }
-      - { src: 'htop/htoprc', dest: '.config/htop/htoprc' }
-      - { src: 'vim/vimrc', dest: '.vimrc' }
+      - { src: 'git/gitconfig', dest: '.gitconfig' }
       - { src: 'zsh/zshrc', dest: '.zshrc' }
+      - { src: 'oh-my-zsh/aliases', dest: '.oh-my-zsh/custom/aliases.zsh' }
       - { src: 'nvim/init.vim', dest: '.config/nvim/init.vim' }
       - { src: 'nvim/plug.vim', dest: '.local/share/nvim/site/autoload/plug.vim' }
+      - { src: 'oh-my-zsh/powerlevel10k.zsh-theme', dest: '.oh-my-zsh/custom/themes/powerlevel10k/' }
+        
 
-
-  - name: users | fifthcard | copy individual zsh config files
-    tags: dotfiles,fifthcard,users,zsh
-    copy:
-      src: files/fifthcard/zsh/{{ item.src }}
-      dest: /home/fifthcard/.zsh/{{ item.src }}
-      owner: fifthcard
-      group: fifthcard
-      mode: 0600
-    with_items:
-      - { src: 'aliases.zsh' }
-      - { src: 'bindkey.zsh' }
-      - { src: 'completion.zsh' }
-      - { src: 'exports.zsh' }
-      - { src: 'functions.zsh' }
-      - { src: 'history.zsh' }
-      - { src: 'path.zsh' }
-      - { src: 'plugins.zsh' }
-      - { src: 'prompt.zsh' }
-      - { src: 'setopt.zsh' }
-      - { src: 'theming.zsh' }
 
 #    notify: update_vim_bundle_perms
 
