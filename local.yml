@@ -97,7 +97,7 @@
       - { src: 'nvim/init.vim', dest: '.config/nvim/init.vim' }
       - { src: 'nvim/plug.vim', dest: '.local/share/nvim/site/autoload/plug.vim' }
       - { src: 'oh-my-zsh/powerlevel10k.zsh-theme', dest: '.oh-my-zsh/custom/themes/powerlevel10k/' }
-        
+      - { src: 'oh-my-zsh/oh-my-zsh.sh', dest: '.oh-my-zsh/oh-my-zsh.sh' }  
 
 
 #    notify: update_vim_bundle_perms
