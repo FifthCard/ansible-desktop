@@ -1,133 +1,149 @@
 ---
 - hosts: localhost
-    connection: local
-    become: true
+  connection: local
+  become: true
 
-    tasks:
-    - name: install packages
-        package:
-            name:
-                - git
-                - htop
-                - tmux
-                - neovim
-                - colordiff
-                - curl
-                - at
-                - htop
-                - iotop
-                - lsof
-                - mc
-                - neofetch
-                - net-tools
-                - nmap
-                - rsync
-                - screen
-                - wget
-                - whois
-                - zsh
+  tasks:
+  - name: install packages
+    package:
+      name:
+        - git
+        - htop
+        - tmux
+        - neovim
+        - colordiff
+        - curl
+        - at
+        - htop
+        - iotop
+        - lsof
+        - mc
+        - neofetch
+        - net-tools
+        - nmap
+        - rsync
+        - screen
+        - wget
+        - whois
+        - zsh
 
-    - name: add ansible user
-        user:
-            name: velociraptor
-            system: yes
+  - name: add ansible user
+    user:
+      name: velociraptor
+      system: yes
 
-    - name: set up sudo for ansible user
-        copy:
-            src: files/sudoer_velociraptor
-            dest: /etc/sudoers.d/velociraptor
-            owner: root
-            group: root
-            mode: 0440
+  - name: set up sudo for ansible user
+    copy:
+      src: files/sudoer_velociraptor
+      dest: /etc/sudoers.d/velociraptor
+      owner: root
+      group: root
+      mode: 0440
 
-    - name: add ansible cron job
-        cron:
-            name: ansible auto-provision
-            user: velociraptor
-            minute: "*/10"
-            job: ansible-pull -o -U https://github.com/FifthCard/ansible-desktop.git
+  - name: add ansible cron job
+    cron:
+      name: ansible auto-provision
+      user: velociraptor
+      minute: "*/10"
+      job: ansible-pull -o -U https://github.com/FifthCard/ansible-desktop.git
 
-    - name: copy .bashrc file
-        copy:
-            src: files/bashrc
-            dest: /home/fifthcard/.bashrc
-            owner: fifthcard
-            group: fifthcard
+  - name: copy .bashrc file
+    copy:
+      src: files/bashrc
+      dest: /home/fifthcard/.bashrc
+      owner: fifthcard
+      group: fifthcard
 
-    - name: create config dir user fifthcard
-        tags: dotfiles, fifthcard,tmux,users,vim,zsh
-        file:
-            path: /home/fifthcard/{{ item.dir }}
-            state: directory
-            owner: fifthcard
-            group: fifthcard
-            mode: 0700
-        with_items:
-            - { dir: '.bash' }
-            - { dir: '.config' }
-            - { dir: '.config/nvim' }
-            - { dir: '.local' }
-            - { dir: '.local/share' }
-            - { dir: '.local/share/nvim' }
-            - { dir: '.local/share/nvim/site' }
-            - { dir: '.local/share/nvim/site/autoload' }
-            - { dir: '.zsh' }
-            - { dir: '.oh-my-zsh' }
-            - { dir: '.oh-my-zsh/custom/' }
-            - { dir: '.oh-my-zsh/custom/themes/' }
-            - { dir: '.oh-my-zsh/custom/themes/powerlevel10k/' }
+  - name: create config dir user fifthcard
+    tags: dotfiles, fifthcard,tmux,users,vim,zsh
+    file:
+      path: /home/fifthcard/{{ item.dir }}
+      state: directory
+      owner: fifthcard
+      group: fifthcard
+      mode: 0700
+    with_items:
+      - { dir: '.bash' }
+      - { dir: '.config' }
+      - { dir: '.config/nvim' }
+      - { dir: '.local' }
+      - { dir: '.local/share' }
+      - { dir: '.local/share/nvim' }
+      - { dir: '.local/share/nvim/site' }
+      - { dir: '.local/share/nvim/site/autoload' }
+      - { dir: '.zsh' }
+      - { dir: '.oh-my-zsh' }
+      - { dir: '.oh-my-zsh/custom/' }
+      - { dir: '.oh-my-zsh/custom/themes/' }
+      - { dir: '.oh-my-zsh/custom/themes/powerlevel10k/' }
 
-    - name: clone oh-my-zsh for users
-        tags:
-            # Suppress warning: [ANSIBLE0006] git used in place of git module
-            # Git module doesn't allow us to set `core.autocrlf=input`.
-            - skip_ansible_lint
-        become: yes
-        become_user: 'fifthcard'
-        # core.autocrlf=input prevents https://github.com/robbyrussell/oh-my-zsh/issues/4402
-        command: 'git clone -c core.autocrlf=input --depth=1 https://github.com/robbyrussell/oh-my-zsh.git .oh-my-zsh'
-        args:
-            chdir: '~/'
-            creates: '~/.oh-my-zsh'
+  - name: clone oh-my-zsh for users
+		tags:
+			# Suppress warning: [ANSIBLE0006] git used in place of git module
+			# Git module doesn't allow us to set `core.autocrlf=input`.
+			- skip_ansible_lint
+			become: yes
+			become_user: '{{ user.username }}'
+			# core.autocrlf=input prevents https://github.com/robbyrussell/oh-my-zsh/issues/4402
+			command: 'git clone -c core.autocrlf=input --depth=1 https://github.com/robbyrussell/oh-my-zsh.git .oh-my-zsh'
+			args:
+				chdir: '~{{ user.username }}'
+				creates: '~{{ user.username }}/.oh-my-zsh'
+				with_items: "{{ users }}"
+				when: "((user.oh_my_zsh | default({})).install | default(oh_my_zsh_install)) | bool"
+				loop_control:
+					loop_var: user
+					label: '{{ user.username }}'
 
-    - name: set permissions of oh-my-zsh for users
-        become: yes
-        file:
-            path: '~/.oh-my-zsh'
-            # Prevent the cloned repository from having insecure permissions. Failing to do
-            # so causes compinit() calls to fail with "command not found: compdef" errors
-            # for users with insecure umasks (e.g., "002", allowing group writability).
-            mode: 'go-w'
-            recurse: yes
+  - name: set permissions of oh-my-zsh for users
+		become: yes
+		file:
+			path: '~{{ user.username }}/.oh-my-zsh'
+			# Prevent the cloned repository from having insecure permissions. Failing to do
+			# so causes compinit() calls to fail with "command not found: compdef" errors
+			# for users with insecure umasks (e.g., "002", allowing group writability).
+			mode: 'go-w'
+			recurse: yes
+			with_items: "{{ users }}"
+			when: "((user.oh_my_zsh | default({})).install | default(oh_my_zsh_install)) | bool"
+			loop_control:
+				loop_var: user
+				label: '{{ user.username }}'
 
-    - name: set default shell for users
-        become: yes
-        user:
-            name: 'fifthcard'
-            shell: /bin/zsh
+  - name: set default shell for users
+		become: yes
+		user:
+			name: '{{ user.username }}'
+			shell: /bin/zsh
+			with_items: "{{ users }}"
+			when: "((user.oh_my_zsh | default({})).install | default(oh_my_zsh_install)) | bool"
+			loop_control:
+				loop_var: user
+				label: '{{ user.username }}'
 
-    - name: users | fifthcard | copy dotfiles
-        tags: dotfiles,users,fifthcard,tmux,users,vim,zsh
-        copy:
-            src: files/fifthcard/{{ item.src }}
-            dest: /home/fifthcard/{{ item.dest }}
-            owner: fifthcard
-            group: fifthcard
-            mode: 0600
-        with_items:
-            - { src: 'bash/bash_aliases', dest: '.bash/bash_aliases' }
-            - { src: 'bash/bash_profile', dest: '.bash_profile' }
-            - { src: 'bash/bashrc', dest: '.bashrc' }
-            - { src: 'bash/profile', dest: '.profile' }
-            - { src: 'git/gitconfig', dest: '.gitconfig' }
-            - { src: 'zsh/zshrc', dest: '.zshrc' }
-            - { src: 'oh-my-zsh/aliases', dest: '.oh-my-zsh/custom/aliases.zsh' }
-            - { src: 'nvim/init.vim', dest: '.config/nvim/init.vim' }
-            - { src: 'nvim/plug.vim', dest: '.local/share/nvim/site/autoload/plug.vim' }
-            - { src: 'oh-my-zsh/powerlevel10k.zsh-theme', dest: '.oh-my-zsh/custom/themes/powerlevel10k/' }
+  - name: users | fifthcard | copy dotfiles
+    tags: dotfiles,users,fifthcard,tmux,users,vim,zsh
+    copy:
+      src: files/fifthcard/{{ item.src }}
+      dest: /home/fifthcard/{{ item.dest }}
+      owner: fifthcard
+      group: fifthcard
+      mode: 0600
+    with_items:
+      - { src: 'bash/bash_aliases', dest: '.bash/bash_aliases' }
+      - { src: 'bash/bash_profile', dest: '.bash_profile' }
+      - { src: 'bash/bashrc', dest: '.bashrc' }
+      - { src: 'bash/profile', dest: '.profile' }
+      - { src: 'git/gitconfig', dest: '.gitconfig' }
+      - { src: 'zsh/zshrc', dest: '.zshrc' }
+      - { src: 'oh-my-zsh/aliases', dest: '.oh-my-zsh/custom/aliases.zsh' }
+      - { src: 'nvim/init.vim', dest: '.config/nvim/init.vim' }
+      - { src: 'nvim/plug.vim', dest: '.local/share/nvim/site/autoload/plug.vim' }
+      - { src: 'oh-my-zsh/powerlevel10k.zsh-theme', dest: '.oh-my-zsh/custom/themes/powerlevel10k/' }
+      - { src: 'oh-my-zsh/oh-my-zsh.sh', dest: '.oh-my-zsh/oh-my-zsh.sh' }
 
 
-#        notify: update_vim_bundle_perms
+#    notify: update_vim_bundle_perms
 
 
 
