@@ -86,15 +86,12 @@
       chdir: '~'
       creates: '~/.oh-my-zsh'
 
-  - name: oh-my-zsh powerlevel10k theme
-    tags:
-      - skip_ansible_lint
-    command: 'git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k'
-
-  - name: oh-my-zsh autosuggestion
-    tags:
-      - skip_ansible_lint
-    command: 'git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions'
+  - name: oh-my-zsh- powerlevel10k theme
+    git:
+      repo: 'https://github.com/romkatv/powerlevel10k.git'
+      dest: '${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k'
+      clone: yes
+      update: yes
 
   - name: oh-my-zsh autosuggestion w/git module
     git:
