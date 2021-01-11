@@ -7,6 +7,7 @@
   - name: install packages
     package:
       name:
+        - git
         - htop
         - tmux
         - neovim
@@ -75,8 +76,35 @@
       - { dir: '.oh-my-zsh/custom/' }
       - { dir: '.oh-my-zsh/custom/themes/' }
       - { dir: '.oh-my-zsh/custom/themes/powerlevel10k/' }
-        
 
+  - name: clone oh-my-zsh for users
+		tags:
+			# Suppress warning: [ANSIBLE0006] git used in place of git module
+			# Git module doesn't allow us to set `core.autocrlf=input`.
+			- skip_ansible_lint
+		become: yes
+		become_user: 'fifthcard'
+		# core.autocrlf=input prevents https://github.com/robbyrussell/oh-my-zsh/issues/4402
+		command: 'git clone -c core.autocrlf=input --depth=1 https://github.com/robbyrussell/oh-my-zsh.git .oh-my-zsh'
+		args:
+			chdir: '~/'
+			creates: '~/.oh-my-zsh'
+
+	- name: set permissions of oh-my-zsh for users
+		become: yes
+		file:
+			path: '~/.oh-my-zsh'
+			# Prevent the cloned repository from having insecure permissions. Failing to do
+			# so causes compinit() calls to fail with "command not found: compdef" errors
+			# for users with insecure umasks (e.g., "002", allowing group writability).
+			mode: 'go-w'
+			recurse: yes
+
+	- name: set default shell for users
+		become: yes
+		user:
+			name: 'fifthcard'
+			shell: /bin/zsh
 
   - name: users | fifthcard | copy dotfiles
     tags: dotfiles,users,fifthcard,tmux,users,vim,zsh
@@ -97,7 +125,6 @@
       - { src: 'nvim/init.vim', dest: '.config/nvim/init.vim' }
       - { src: 'nvim/plug.vim', dest: '.local/share/nvim/site/autoload/plug.vim' }
       - { src: 'oh-my-zsh/powerlevel10k.zsh-theme', dest: '.oh-my-zsh/custom/themes/powerlevel10k/' }
-      - { src: 'oh-my-zsh/oh-my-zsh.sh', dest: '.oh-my-zsh/oh-my-zsh.sh' }  
 
 
 #    notify: update_vim_bundle_perms
