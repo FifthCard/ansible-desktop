@@ -86,14 +86,15 @@
       chdir: '~'
       creates: '~/.oh-my-zsh'
 
+  - name: oh-my-zsh autosuggestion
+    tags:
+      - skip_ansible_lint
+    command: 'git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions'
+
   - name: set permissions of oh-my-zsh for users
     file:
       path: '~/.oh-my-zsh'
       mode: 'go-w'
-
-  - name: set default shell for users
-    user: 'fifthcard'
-      shell: /bin/zsh
 
   - name: users | fifthcard | copy dotfiles
     tags: dotfiles,users,fifthcard,tmux,users,vim,zsh
@@ -109,12 +110,11 @@
       - { src: 'bash/bashrc', dest: '.bashrc' }
       - { src: 'bash/profile', dest: '.profile' }
       - { src: 'git/gitconfig', dest: '.gitconfig' }
-      - { src: 'zsh/zshrc', dest: '.zshrc' }
-      - { src: 'oh-my-zsh/aliases', dest: '.oh-my-zsh/custom/aliases.zsh' }
       - { src: 'nvim/init.vim', dest: '.config/nvim/init.vim' }
       - { src: 'nvim/plug.vim', dest: '.local/share/nvim/site/autoload/plug.vim' }
+      - { src: 'zsh/zshrc', dest: '.zshrc' }
+      - { src: 'oh-my-zsh/aliases', dest: '.oh-my-zsh/custom/aliases.zsh' }
       - { src: 'oh-my-zsh/powerlevel10k.zsh-theme', dest: '.oh-my-zsh/custom/themes/powerlevel10k/' }
-      - { src: 'oh-my-zsh/oh-my-zsh.sh', dest: '.oh-my-zsh/oh-my-zsh.sh' }
       - { src: 'oh-my-zsh/p10k.zsh', dest: '.oh-my-zsh/custom/themes/powerlevel10k/internal/p10k.zsh' }
 
 
