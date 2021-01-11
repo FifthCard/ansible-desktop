@@ -92,7 +92,7 @@
       mode: 'go-w'
 
   - name: set default shell for users
-    user:
+    user: 'fifthcard'
       shell: /bin/zsh
 
   - name: users | fifthcard | copy dotfiles
