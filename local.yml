@@ -127,8 +127,8 @@
       - { src: 'oh-my-zsh/p10k.zsh', dest: '.oh-my-zsh/custom/themes/powerlevel10k/internal/p10k.zsh' }
       - { src: 'oh-my-zsh/worker.zsh', dest: '.oh-my-zsh/custom/themes/powerlevel10k/internal/worker.zsh' }
       - { src: 'oh-my-zsh/parser.zsh', dest: '.oh-my-zsh/custom/themes/powerlevel10k/internal/parser.zsh' }
-      - { src: 'oh-my-zsh/icons.zsh', dest: '.oh-my-zsh/custom/themes/pwoerlevel10k/internal/icons.zsh' }
-      - { src: 'oh-my-zsh/configure.zsh', dest: '.oh-my-zsh/custom/themes/pwoerlevel10k/internal/configure.zsh' }
+      - { src: 'oh-my-zsh/icons.zsh', dest: '.oh-my-zsh/custom/themes/powerlevel10k/internal/icons.zsh' }
+      - { src: 'oh-my-zsh/configure.zsh', dest: '.oh-my-zsh/custom/themes/powerlevel10k/internal/configure.zsh' }
 
 
 #    notify: update_vim_bundle_perms
