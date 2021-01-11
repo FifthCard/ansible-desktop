@@ -80,10 +80,10 @@
   - name: clone oh-my-zsh for users
     tags:
       - skip_ansible_lint
-      command: 'git clone -c core.autocrlf=input --depth=1 https://github.com/robbyrussell/oh-my-zsh.git .oh-my-zsh'
-      args:
-        chdir: '~'
-        creates: '~/.oh-my-zsh'
+    command: 'git clone -c core.autocrlf=input --depth=1 https://github.com/robbyrussell/oh-my-zsh.git .oh-my-zsh'
+    args:
+      chdir: '~'
+      creates: '~/.oh-my-zsh'
 
   - name: set permissions of oh-my-zsh for users
     file:
