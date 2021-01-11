@@ -91,6 +91,11 @@
       - skip_ansible_lint
     command: 'git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions'
 
+  - name: oh-my-zsh powerlevel10k theme
+    tags:
+      - skip_ansible_lint
+    command: 'git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k'
+
   - name: set permissions of oh-my-zsh for users
     file:
       path: '~/.oh-my-zsh'
@@ -114,7 +119,6 @@
       - { src: 'nvim/plug.vim', dest: '.local/share/nvim/site/autoload/plug.vim' }
       - { src: 'zsh/zshrc', dest: '.zshrc' }
       - { src: 'oh-my-zsh/aliases', dest: '.oh-my-zsh/custom/aliases.zsh' }
-      - { src: 'oh-my-zsh/powerlevel10k.zsh-theme', dest: '.oh-my-zsh/custom/themes/powerlevel10k/' }
       - { src: 'oh-my-zsh/p10k.zsh', dest: '.oh-my-zsh/custom/themes/powerlevel10k/internal/p10k.zsh' }
 
 
