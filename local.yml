@@ -94,7 +94,14 @@
   - name: oh-my-zsh autosuggestion
     tags:
       - skip_ansible_lint
-    command: 'git clone -c core.autocrlf=input https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions'
+    command: 'git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions'
+
+  - name: oh-my-zsh autosuggestion w/git module
+    git:
+      repo: 'https://github.com/zsh-users/zsh-autosuggestions'
+      dest: '${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions'
+      clone: yes
+      update: yes
 
 
   - name: set permissions of oh-my-zsh for users
