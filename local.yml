@@ -80,40 +80,19 @@
   - name: clone oh-my-zsh for users
     tags:
       - skip_ansible_lint
-      become: yes
-      become_user: '{{ user.username }}'
       command: 'git clone -c core.autocrlf=input --depth=1 https://github.com/robbyrussell/oh-my-zsh.git .oh-my-zsh'
       args:
-        chdir: '~{{ user.username }}'
-        creates: '~{{ user.username }}/.oh-my-zsh'
-        with_items: "{{ users }}"
-        when: "((user.oh_my_zsh | default({})).install | default(oh_my_zsh_install)) | bool"
-        loop_control:
-          loop_var: user
-          label: '{{ user.username }}'
+        chdir: '~'
+        creates: '~/.oh-my-zsh'
 
   - name: set permissions of oh-my-zsh for users
-    become: yes
     file:
-      path: '~{{ user.username }}/.oh-my-zsh'
+      path: '~/.oh-my-zsh'
       mode: 'go-w'
-      recurse: yes
-      with_items: "{{ users }}"
-      when: "((user.oh_my_zsh | default({})).install | default(oh_my_zsh_install)) | bool"
-      loop_control:
-        loop_var: user
-        label: '{{ user.username }}'
 
   - name: set default shell for users
-    become: yes
     user:
-      name: '{{ user.username }}'
       shell: /bin/zsh
-      with_items: "{{ users }}"
-      when: "((user.oh_my_zsh | default({})).install | default(oh_my_zsh_install)) | bool"
-      loop_control:
-        loop_var: user
-        label: '{{ user.username }}'
 
   - name: users | fifthcard | copy dotfiles
     tags: dotfiles,users,fifthcard,tmux,users,vim,zsh
