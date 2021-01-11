@@ -76,6 +76,7 @@
       - { dir: '.oh-my-zsh/custom/' }
       - { dir: '.oh-my-zsh/custom/themes/' }
       - { dir: '.oh-my-zsh/custom/themes/powerlevel10k/' }
+      - { dir: '.oh-my-zsh/custom/themes/powerlevel10k/internal/' }
 
   - name: clone oh-my-zsh for users
     tags:
@@ -114,6 +115,7 @@
       - { src: 'nvim/plug.vim', dest: '.local/share/nvim/site/autoload/plug.vim' }
       - { src: 'oh-my-zsh/powerlevel10k.zsh-theme', dest: '.oh-my-zsh/custom/themes/powerlevel10k/' }
       - { src: 'oh-my-zsh/oh-my-zsh.sh', dest: '.oh-my-zsh/oh-my-zsh.sh' }
+      - { src: 'oh-my-zsh/p10k.zsh', dest: '.oh-my-zsh/custom/themes/powerlevel10k/internal/p10k.zsh' }
 
 
 #    notify: update_vim_bundle_perms
