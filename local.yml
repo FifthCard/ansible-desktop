@@ -72,19 +72,14 @@
       - { dir: '.local/share/nvim/site' }
       - { dir: '.local/share/nvim/site/autoload' }
       - { dir: '.zsh' }
-      - { dir: '.oh-my-zsh' }
-      - { dir: '.oh-my-zsh/custom/' }
-      - { dir: '.oh-my-zsh/custom/themes/' }
-      - { dir: '.oh-my-zsh/custom/themes/powerlevel10k/' }
-      - { dir: '.oh-my-zsh/custom/themes/powerlevel10k/internal/' }
 
-  - name: clone oh-my-zsh for users
-    tags:
-      - skip_ansible_lint
-    command: 'git clone -c core.autocrlf=input --depth=1 https://github.com/robbyrussell/oh-my-zsh.git .oh-my-zsh'
-    args:
-      chdir: '~'
-      creates: '~/.oh-my-zsh'
+  -name: install oh-my-zsh git clone
+    git:
+      repo: 'https://github.com/robbyrussell/oh-my-zsh.git'
+      dest: '${ZSH_CUSTOM:-$HOME/.oh-my-zsh/'
+      clone: yes
+      update: yes
+
 
   - name: oh-my-zsh- powerlevel10k theme
     git:
