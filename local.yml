@@ -73,7 +73,7 @@
       - { dir: '.local/share/nvim/site/autoload' }
       - { dir: '.zsh' }
 
-  -name: install oh-my-zsh git clone
+  - name: install oh-my-zsh git clone
     git:
       repo: 'https://github.com/robbyrussell/oh-my-zsh.git'
       dest: '${ZSH_CUSTOM:-$HOME/.oh-my-zsh/'
