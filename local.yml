@@ -81,8 +81,6 @@
       repo: 'https://github.com/romkatv/powerlevel10k.git'
       dest: '~/.oh-my-zsh/custom/themes/powerlevel10k'
       force: yes
-    become_user: fifthcard
-    become: yes
 
   - name: Install zsh_autocompletion
     git:
