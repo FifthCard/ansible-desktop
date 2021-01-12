@@ -80,9 +80,17 @@
     git:
       repo: 'https://github.com/romkatv/powerlevel10k.git'
       dest: '~/.oh-my-zsh/custom/themes/powerlevel10k'
+      force: yes
     become_user: fifthcard
     become: yes
 
+  - name: Install zsh_autocompletion
+    git:
+      repo: 'https://github.com/zsh-users/zsh-autosuggestions'
+      dest: '${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions'
+      force: yes
+    become_user: fifthcard
+    become: yes
 
   - name: users | fifthcard | copy dotfiles
     tags: dotfiles,users,fifthcard,tmux,users,vim,zsh
