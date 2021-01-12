@@ -73,33 +73,8 @@
       - { dir: '.local/share/nvim/site/autoload' }
       - { dir: '.zsh' }
 
-  - name: install oh-my-zsh git clone
-    git:
-      repo: 'https://github.com/robbyrussell/oh-my-zsh.git'
-      dest: '${ZSH_CUSTOM:-$HOME/.oh-my-zsh/'
-      clone: yes
-      update: yes
-
-
-  - name: oh-my-zsh- powerlevel10k theme
-    git:
-      repo: 'https://github.com/romkatv/powerlevel10k.git'
-      dest: '${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k'
-      clone: yes
-      update: yes
-
-  - name: oh-my-zsh autosuggestion w/git module
-    git:
-      repo: 'https://github.com/zsh-users/zsh-autosuggestions'
-      dest: '${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions'
-      clone: yes
-      update: yes
-
-
-  - name: set permissions of oh-my-zsh for users
-    file:
-      path: '~/.oh-my-zsh'
-      mode: 'go-w'
+  - name: Install oh-my-zsh w/ curl
+    shell: 'curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh'
 
   - name: users | fifthcard | copy dotfiles
     tags: dotfiles,users,fifthcard,tmux,users,vim,zsh
